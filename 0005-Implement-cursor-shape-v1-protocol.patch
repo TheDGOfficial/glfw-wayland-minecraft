@@ -24,7 +24,7 @@ Based on glfw/glfw PR #2679 by JakobDev.
 
 diff --git a/deps/wayland/cursor-shape-v1.xml b/deps/wayland/cursor-shape-v1.xml
 new file mode 100644
-index 0000000..8df2e4b
+index 00000000..8df2e4ba
 --- /dev/null
 +++ b/deps/wayland/cursor-shape-v1.xml
 @@ -0,0 +1,152 @@
@@ -182,7 +182,7 @@ index 0000000..8df2e4b
 +</protocol>
 diff --git a/deps/wayland/tablet-unstable-v2.xml b/deps/wayland/tablet-unstable-v2.xml
 new file mode 100644
-index 0000000..d78b141
+index 00000000..d78b141f
 --- /dev/null
 +++ b/deps/wayland/tablet-unstable-v2.xml
 @@ -0,0 +1,1182 @@
@@ -1369,7 +1369,7 @@ index 0000000..d78b141
 +  </interface>
 +</protocol>
 diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
-index 3021a55..cda96f6 100644
+index b761db3b..a3528af2 100644
 --- a/src/CMakeLists.txt
 +++ b/src/CMakeLists.txt
 @@ -107,6 +107,8 @@ if (GLFW_BUILD_WAYLAND)
@@ -1380,9 +1380,9 @@ index 3021a55..cda96f6 100644
 +        generate_wayland_protocol("cursor-shape-v1.xml")
          generate_wayland_protocol("text-input-unstable-v1.xml")
          generate_wayland_protocol("text-input-unstable-v3.xml")
-     #endif()
+         generate_wayland_protocol("xdg-toplevel-icon-v1.xml")
 diff --git a/src/wl_init.c b/src/wl_init.c
-index a35ec78..b0ccf12 100644
+index 394621bb..3fabfd0f 100644
 --- a/src/wl_init.c
 +++ b/src/wl_init.c
 @@ -52,6 +52,8 @@
@@ -1394,7 +1394,7 @@ index a35ec78..b0ccf12 100644
  #include "pointer-warp-v1-client-protocol.h"
  #include "text-input-unstable-v1-client-protocol.h"
  #include "text-input-unstable-v3-client-protocol.h"
-@@ -97,6 +99,14 @@
+@@ -98,6 +100,14 @@
  #include "idle-inhibit-unstable-v1-client-protocol-code.h"
  #undef types
  
@@ -1409,7 +1409,7 @@ index a35ec78..b0ccf12 100644
  #define types _glfw_pointer_warp_types
  #include "pointer-warp-v1-client-protocol-code.h"
  #undef types
-@@ -219,6 +229,13 @@ static void registryHandleGlobal(void* userData,
+@@ -223,6 +233,13 @@ static void registryHandleGlobal(void* userData,
                               &wp_fractional_scale_manager_v1_interface,
                               1);
      }
@@ -1423,7 +1423,7 @@ index a35ec78..b0ccf12 100644
      else if (strcmp(interface, "wp_pointer_warp_v1") == 0)
      {
          _glfw.wl.pointerWarp =
-@@ -1028,6 +1045,10 @@ void _glfwTerminateWayland(void)
+@@ -1039,6 +1056,10 @@ void _glfwTerminateWayland(void)
          xdg_activation_v1_destroy(_glfw.wl.activationManager);
      if (_glfw.wl.fractionalScaleManager)
          wp_fractional_scale_manager_v1_destroy(_glfw.wl.fractionalScaleManager);
@@ -1435,7 +1435,7 @@ index a35ec78..b0ccf12 100644
          zwp_text_input_manager_v1_destroy(_glfw.wl.textInputManagerV1);
      if (_glfw.wl.textInputManagerV3)
 diff --git a/src/wl_platform.h b/src/wl_platform.h
-index e2b8d0f..aae3ec7 100644
+index e4abfd18..7f2357d9 100644
 --- a/src/wl_platform.h
 +++ b/src/wl_platform.h
 @@ -143,6 +143,8 @@ struct wl_output;
@@ -1447,7 +1447,7 @@ index e2b8d0f..aae3ec7 100644
  
  #define GLFW_WAYLAND_WINDOW_STATE         _GLFWwindowWayland  wl;
  #define GLFW_WAYLAND_LIBRARY_WINDOW_STATE _GLFWlibraryWayland wl;
-@@ -468,6 +470,8 @@ typedef struct _GLFWlibraryWayland
+@@ -465,6 +467,8 @@ typedef struct _GLFWlibraryWayland
      struct zwp_idle_inhibit_manager_v1*     idleInhibitManager;
      struct xdg_activation_v1*               activationManager;
      struct wp_fractional_scale_manager_v1*  fractionalScaleManager;
@@ -1456,7 +1456,7 @@ index e2b8d0f..aae3ec7 100644
      struct wp_pointer_warp_v1*  pointerWarp;
      struct zwp_text_input_manager_v1*       textInputManagerV1;
      struct zwp_text_input_manager_v3*       textInputManagerV3;
-@@ -660,6 +664,7 @@ typedef struct _GLFWcursorWayland
+@@ -658,6 +662,7 @@ typedef struct _GLFWcursorWayland
      int                         width, height;
      int                         xhot, yhot;
      int                         currentImage;
@@ -1465,7 +1465,7 @@ index e2b8d0f..aae3ec7 100644
  
  GLFWbool _glfwConnectWayland(int platformID, _GLFWplatform* platform);
 diff --git a/src/wl_window.c b/src/wl_window.c
-index 927aa82..580ddf8 100644
+index 530f6c84..00da93cb 100644
 --- a/src/wl_window.c
 +++ b/src/wl_window.c
 @@ -53,6 +53,7 @@
@@ -1476,7 +1476,7 @@ index 927aa82..580ddf8 100644
  #include "pointer-warp-v1-client-protocol.h"
  #include "text-input-unstable-v1-client-protocol.h"
  #include "text-input-unstable-v3-client-protocol.h"
-@@ -1258,9 +1259,67 @@ static GLFWbool createNativeSurface(_GLFWwindow* window,
+@@ -1259,9 +1260,67 @@ static GLFWbool createNativeSurface(_GLFWwindow* window,
      return GLFW_TRUE;
  }
  
@@ -1523,7 +1523,7 @@ index 927aa82..580ddf8 100644
 +    }
 +
 +    wp_cursor_shape_device_v1_set_shape(_glfw.wl.cursorShapeDevice,
-+        _glfw.wl.pointerEnterSerial, 
++        _glfw.wl.pointerEnterSerial,
 +        xdgShape);
 +
 +    return GLFW_TRUE;
@@ -1544,18 +1544,18 @@ index 927aa82..580ddf8 100644
      struct itimerspec timer = {0};
      struct wl_cursor* wlCursor = cursorWayland->cursor;
      struct wl_cursor_image* image;
-@@ -2096,6 +2155,10 @@ static void seatHandleCapabilities(void* userData,
+@@ -2095,6 +2154,10 @@ static void seatHandleCapabilities(void* userData,
      {
          _glfw.wl.pointer = wl_seat_get_pointer(seat);
          wl_pointer_add_listener(_glfw.wl.pointer, &pointerListener, NULL);
-+        if (_glfw.wl.cursorShapeManager) 
++        if (_glfw.wl.cursorShapeManager)
 +        {
 +            _glfw.wl.cursorShapeDevice = wp_cursor_shape_manager_v1_get_pointer(_glfw.wl.cursorShapeManager, _glfw.wl.pointer);
 +        }
      }
      else if (!(caps & WL_SEAT_CAPABILITY_POINTER) && _glfw.wl.pointer)
      {
-@@ -3497,6 +3560,8 @@ GLFWbool _glfwCreateCursorWayland(_GLFWcursor* cursor,
+@@ -3525,6 +3588,8 @@ GLFWbool _glfwCreateCursorWayland(_GLFWcursor* cursor,
  
  GLFWbool _glfwCreateStandardCursorWayland(_GLFWcursor* cursor, int shape)
  {
@@ -1564,7 +1564,7 @@ index 927aa82..580ddf8 100644
      const char* name = NULL;
  
      // Try the XDG names first
-@@ -3817,7 +3882,8 @@ void _glfwSetCursorWayland(_GLFWwindow* window, _GLFWcursor* cursor)
+@@ -3834,7 +3899,8 @@ void _glfwSetCursorWayland(_GLFWwindow* window, _GLFWcursor* cursor)
                  NULL,
                  0, 0,
                  0, 0,
@@ -1574,6 +1574,3 @@ index 927aa82..580ddf8 100644
              };
  
              setCursorImage(window, &cursorWayland);
--- 
-2.47.3
-
