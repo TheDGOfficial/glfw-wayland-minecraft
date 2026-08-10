@@ -21,12 +21,7 @@ When exiting fullscreen via `_glfwSetWindowSizeWayland`, the surface is resized 
 
 Based on [BoyOrigin/glfw-wayland](https://github.com/BoyOrigin/glfw-wayland) patch 0004.
 
-### 0004 - Fix framebuffer size rounding with fractional scaling
-The framebuffer dimensions are computed as `(size * scale) / 120`, which truncates. With fractional scaling (e.g. 1.75x), this can produce a buffer 1px smaller than the physical pixel area, causing a bilinear upscale and visible blur on every window. Uses round-half-up instead: `(size * scale + 60) / 120`.
-
-Fix proposed by GamesTrap and mahkoh in [glfw#2713](https://github.com/glfw/glfw/issues/2713).
-
-### 0005 - Implement cursor-shape-v1 protocol
+### 0004 - Implement cursor-shape-v1 protocol
 Lets the compositor render standard cursors instead of the client uploading cursor pixmaps. Ensures the cursor theme, size and rendering are consistent between the application window and the rest of the desktop.
 
 Based on [glfw#2679](https://github.com/glfw/glfw/pull/2679) by JakobDev.
