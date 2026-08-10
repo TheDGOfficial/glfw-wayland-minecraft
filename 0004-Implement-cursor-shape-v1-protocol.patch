@@ -1,7 +1,7 @@
 From b431451b65507fcb39600f92f03177d2769b1a34 Mon Sep 17 00:00:00 2001
 From: keke142 <jdkeke142@gmail.com>
 Date: Fri, 17 Apr 2026 16:04:59 +0200
-Subject: [PATCH 5/7] Implement cursor-shape-v1 protocol
+Subject: [PATCH 4/6] Implement cursor-shape-v1 protocol
 
 Let the compositor render standard cursors instead of the client
 uploading cursor pixmaps. This ensures the cursor theme, size and
