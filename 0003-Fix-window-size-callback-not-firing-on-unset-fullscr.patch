@@ -1,7 +1,7 @@
 From f1e87e13e48adc426c44c7f37614ca1e24e84eb2 Mon Sep 17 00:00:00 2001
 From: keke142 <jdkeke142@gmail.com>
 Date: Fri, 17 Apr 2026 16:03:33 +0200
-Subject: [PATCH 3/7] Fix window size callback not firing on unset fullscreen
+Subject: [PATCH 3/6] Fix window size callback not firing on unset fullscreen
 
 When exiting fullscreen via _glfwSetWindowSizeWayland, the window
 surface is resized but the size callback is never fired. The client
