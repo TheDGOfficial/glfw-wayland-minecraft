@@ -1,7 +1,7 @@
 From 20033e88f10973568af5a7cd594712b751d0e60f Mon Sep 17 00:00:00 2001
 From: keke142 <jdkeke142@gmail.com>
 Date: Fri, 17 Apr 2026 16:03:11 +0200
-Subject: [PATCH 2/7] Implement glfwSetCursorPos with fallback for older
+Subject: [PATCH 2/6] Implement glfwSetCursorPos with fallback for older
  compositors
 
 The LWJGL-CI fork already implements glfwSetCursorPos via the
