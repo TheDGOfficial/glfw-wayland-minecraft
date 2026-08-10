@@ -1,7 +1,7 @@
 From ae31f778f0744ceed209affc0ce5562d955d1c4c Mon Sep 17 00:00:00 2001
 From: keke142 <jdkeke142@gmail.com>
 Date: Fri, 17 Apr 2026 16:01:42 +0200
-Subject: [PATCH 1/7] Key modifiers fix
+Subject: [PATCH 1/6] Key modifiers fix
 
 Without this, pressing Ctrl+A in a text field (e.g. Minecraft chat)
 inserts a literal 'a' character in addition to triggering the select-all
