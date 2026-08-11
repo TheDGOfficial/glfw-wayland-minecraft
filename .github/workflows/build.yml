@@ -44,9 +44,8 @@ jobs:
             -DGLFW_BUILD_TESTS=OFF \
             -DGLFW_BUILD_DOCS=OFF \
             -DCMAKE_C_FLAGS="-march=westmere -mtune=ivybridge -mfsgsbase -mxsave -mxsaveopt -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=0" \
-            -DCMAKE_CXX_FLAGS="-march=westmere -mtune=ivybridge -mfsgsbase -mxsave -mxsaveopt -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=0" \
             -DCMAKE_BUILD_TYPE=Release
-          ninja -C build --parallel
+          ninja -C build
           strip build/src/libglfw.so.3.5
 
       - name: Upload artifact
