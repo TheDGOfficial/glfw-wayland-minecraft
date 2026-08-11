@@ -41,10 +41,10 @@ jobs:
             -DGLFW_BUILD_EXAMPLES=OFF \
             -DGLFW_BUILD_TESTS=OFF \
             -DGLFW_BUILD_DOCS=OFF \
-            -DCMAKE_C_FLAGS="-march=celeron -mtune=celeron" \
-            -DCMAKE_CXX_FLAGS="-march=celeron -mtune=celeron" \
+            -DCMAKE_C_FLAGS="-march=ivybridge -mtune=ivybridge" \
+            -DCMAKE_CXX_FLAGS="-march=ivybridge -mtune=ivybridge" \
             -DCMAKE_BUILD_TYPE=Release
-          ninja -C build -v
+          ninja -C build
 
       - name: Upload artifact
         uses: actions/upload-artifact@v7
