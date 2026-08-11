@@ -31,6 +31,17 @@ jobs:
           git config user.name "CI"
           git am ../0*.patch
 
+      - name: Inspect compiler
+        run: |
+          gcc --version
+          gcc -v
+          gcc -Q -O2 --help=target | grep -E 'march|mtune|avx|avx2|avx512|sse'
+          echo "CFLAGS=$CFLAGS"
+          echo "CXXFLAGS=$CXXFLAGS"
+          echo "CPPFLAGS=$CPPFLAGS"
+          echo "CC=$CC"
+          echo "CXX=$CXX"
+
       - name: Build
         run: |
           cd glfw
@@ -40,9 +51,9 @@ jobs:
             -DBUILD_SHARED_LIBS=ON \
             -DGLFW_BUILD_EXAMPLES=OFF \
             -DGLFW_BUILD_TESTS=OFF \
-            -DGLFW_BUILD_DOCS=OFF
+            -DGLFW_BUILD_DOCS=OFF \
             -DCMAKE_BUILD_TYPE=Release
-          ninja -C build
+          ninja -C build -v
 
       - name: Upload artifact
         uses: actions/upload-artifact@v7
