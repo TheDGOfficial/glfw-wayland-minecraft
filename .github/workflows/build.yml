@@ -11,6 +11,7 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-26.04
+
     steps:
       - uses: actions/checkout@v7
 
@@ -19,7 +20,8 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y cmake ninja-build pkg-config libwayland-dev \
             libxkbcommon-dev wayland-protocols extra-cmake-modules libxrandr-dev \
-            libxinerama-dev libxcursor-dev libxi-dev libgl-dev libwayland-bin
+            libxinerama-dev libxcursor-dev libxi-dev libxext-dev libgl-dev \
+            libwayland-bin
 
       - name: Clone LWJGL-CI/glfw
         run: git clone --depth 1 https://github.com/LWJGL-CI/glfw glfw
@@ -41,10 +43,11 @@ jobs:
             -DGLFW_BUILD_EXAMPLES=OFF \
             -DGLFW_BUILD_TESTS=OFF \
             -DGLFW_BUILD_DOCS=OFF \
-            -DCMAKE_C_FLAGS="-march=ivybridge -mtune=ivybridge" \
-            -DCMAKE_CXX_FLAGS="-march=ivybridge -mtune=ivybridge" \
+            -DCMAKE_C_FLAGS="-march=westmere -mtune=westmere -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=0" \
+            -DCMAKE_CXX_FLAGS="-march=westmere -mtune=westmere -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=0" \
             -DCMAKE_BUILD_TYPE=Release
-          ninja -C build
+          ninja -C build --parallel
+          strip build/src/libglfw.so.3.5
 
       - name: Upload artifact
         uses: actions/upload-artifact@v7
